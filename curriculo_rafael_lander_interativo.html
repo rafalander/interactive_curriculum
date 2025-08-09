@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rafael Lander Santos — Currículo Interativo</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#06b6d4; --text:#e6eef6; --glass: rgba(255,255,255,0.03);
+    }
+    [data-theme="light"]{ --bg:#f6f9fc; --card:#ffffff; --muted:#475569; --accent:#0ea5b7; --text:#0f1724; --glass: rgba(15,23,42,0.04); }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'; margin:0; min-height:100vh; background:linear-gradient(180deg,var(--bg), #071024); color: var(--text);}
+    .container{max-width:1100px;margin:28px auto;padding:24px;display:grid;grid-template-columns:320px 1fr;gap:24px}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px)}
+
+    /* Sidebar */
+    .profile{display:flex;gap:14px;align-items:center}
+    .avatar{width:78px;height:78px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:#fff}
+    .name{font-size:18px;font-weight:700}
+    .role{color:var(--muted);font-size:13px;margin-top:4px}
+    .contact{margin-top:14px;font-size:14px}
+    .contact a{color:var(--accent);text-decoration:none}
+    .section-title{font-size:13px;color:var(--muted);text-transform:uppercase;margin:12px 0}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);font-size:13px;margin:6px 6px 0 0}
+    .skills{display:flex;flex-direction:column;gap:8px}
+    .skill{display:flex;justify-content:space-between;align-items:center}
+    .bar{height:8px;background:rgba(255,255,255,0.06);border-radius:999px;flex:1;margin-left:10px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent), #7c3aed);}
+
+    /* Main */
+    header.main-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .actions{display:flex;gap:10px;align-items:center}
+    button{background:var(--glass);border:0;padding:10px 12px;border-radius:10px;color:inherit;cursor:pointer}
+
+    .about{margin-top:12px;color:var(--muted);line-height:1.45}
+    .timeline{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .job{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px}
+    .job h4{margin:0 0 6px 0}
+    .job .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+    ul{margin:0;padding-left:18px}
+
+    .courses{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .course{background:var(--glass);padding:8px;border-radius:8px;font-size:13px}
+
+    /* Responsive */
+    @media (max-width:900px){.container{grid-template-columns:1fr; padding:16px} .avatar{width:64px;height:64px}}
+
+    /* small helpers */
+    .chip{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:13px}
+    .search{display:flex;gap:8px;align-items:center}
+    input[type="search"]{padding:10px;border-radius:10px;border:0;background:rgba(255,255,255,0.03);color:inherit;min-width:200px}
+    footer.note{margin-top:14px;color:var(--muted);font-size:13px}
+
+    /* improve link contrast in light mode */
+    [data-theme="light"] a{color:var(--accent)}
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="container">
+    <aside class="card">
+      <div class="profile">
+        <div class="avatar">RL</div>
+        <div>
+          <div class="name">Rafael Lander Santos</div>
+          <div class="role">Desenvolvedor Backend | PHP | MYSQL | Laravel</div>
+        </div>
+      </div>
+
+      <div class="section-title">Contato</div>
+      <div class="contact">
+        <div><strong>Email:</strong> <a id="emailLink" href="mailto:rafa.lander@hotmail.com">rafa.lander@hotmail.com</a></div>
+        <div><strong>Tel:</strong> <a id="phoneLink" href="https://wa.me/5511969124645" target="_blank" rel="noopener noreferrer">(11) 96912-4645</a></div>
+        <div><strong>Endereço:</strong> Jandira - SP</div>
+        <div class="born"><strong>Nasc.:</strong> <span id="bornValue"></span></div>
+        <div class="age"><strong>Idade:</strong> <span id="ageValue"></span></div>
+      </div>
+
+      <div class="section-title">Cursos</div>
+      <div class="courses">
+        <div class="course">PHP: Conheça a Programação Orientada a Objetos — Alura (out/2024)</div>
+        <div class="course">PHP: Criando sua Aplicação — Alura (out/2024)</div>
+        <div class="course">PHP: Evolua seu Conhecimento e Organize seu Código — Alura (out/2024)</div>
+        <div class="course">HTTP: Entendendo a Web por Baixo dos Panos — Alura (abr/2022)</div>
+        <div class="course">Python 3 Parte 2 — Alura (abr/2022)</div>
+        <div class="course">Python 3 Parte 1 — Alura (mar/2022)</div>
+        <div class="course">HTML5 e CSS3 Parte 4 — Alura (jul/2020)</div>
+        <div class="course">HTML5 e CSS3 Parte 2 — Alura (mar/2020)</div>
+        <div class="course">HTML5 e CSS3 Parte 3 — Alura (mar/2020)</div>
+        <div class="course">HTML5 e CSS3 Parte 1 — Alura (fev/2020)</div>
+        <div class="course">SQL Server: Manipulação de Dados — Alura (out/2019)</div>
+        <div class="course">Linux I — Alura (set/2019)</div>
+        <div class="course">Linux II — Alura (set/2019)</div>
+        <div class="course">SQL Server: Consultas Avançadas — Alura (jul/2019)</div>
+        <div class="course">Lógica de Programação I — Alura (fev/2019)</div>
+        <div class="course">SQL Server: Introdução ao SQL — Alura (dez/2018)</div>
+      </div>
+    </aside>
+
+    <main class="card">
+      <header class="main-header">
+        <div>
+          <h1 style="margin:0">Rafael Lander Santos</h1>
+          <div id="experienceSummary" style="color:var(--muted)">Profissional com +8 anos de experiência em TI - suporte, infraestrutura e desenvolvimento</div>
+        </div>
+        <div class="actions">
+          <div class="search">
+            <input id="q" type="search" placeholder="Filtrar experiências (ex: Postgres, ServiceNow)" />
+            <button id="searchBtn" title="Filtrar">🔎</button>
+          </div>
+          <button id="themeBtn" title="Alternar tema">🌓 Tema</button>
+          <button id="copyBtn" title="Copiar email">📋 Copiar e‑mail</button>
+          <button id="printBtn" title="Imprimir / Salvar PDF">🖨️ Salvar</button>
+        </div>
+      </header>
+      
+      <section style="margin-top:16px">
+        <h3>Formação</h3>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">
+          <div class="chip">UNINOVE — Análise de Sistemas de Computação (2020 - 2022)</div>
+          <div class="chip">SENAI Jandira — Técnico em Informática (2009 - 2010)</div>
+        </div>
+      </section>
+      
+      <section style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>Experiência Profissional</h3><small style="color:var(--muted)">Clique em um item para expandir</small></div>
+
+        <div class="timeline" id="timeline">
+
+          <article class="job" data-tags="uello backend php symfony linux">
+            <h4>Uello — Desenvolvedor BackEnd Jr</h4>
+            <div class="meta">jun/2025 — atual</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Desenvolvimento backend com foco em APIs e integração com sistemas internos.</li>
+                <li>Trabalho com PHP/Symfony, banco de dados e deploys.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="uello suporte helpdesk ad ldap">
+            <h4>Uello — Analista de Suporte Pl</h4>
+            <div class="meta">jul/2022 — jun/2025</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Atendimento de 2º/3º nível, administração de contas e suporte a infraestrutura.</li>
+                <li>Integração com times de desenvolvimento para resolução de bugs e deploys.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="gic suporte postgres oracle sqlserver linux">
+            <h4>GIC Brasil — Analista de Suporte</h4>
+            <div class="meta">set/2019 — mar/2022</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Suporte técnico ao sistema RUB; atendimento a clientes, instalação e reparo.</li>
+                <li>Gerenciamento de banco de dados Postgres, Oracle e SQL Server.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="maxipark suporte sqlserver office365">
+            <h4>Maxipark — Analista de Suporte</h4>
+            <div class="meta">nov/2018 — ago/2019</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Suporte local e remoto às filiais; administração Office365.</li>
+                <li>Inserção de dados no Protheus; administração de SQL Server.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="unisys infraestrutura onsite">
+            <h4>Unisys — Representante de Infraestrutura</h4>
+            <div class="meta">out/2016 — out/2017</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Suporte on-site, impressoras e infraestrutura de redes.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="bidu suporte zendesk ad dhcp gpo">
+            <h4>Bidu Corretora — Estagiário de Infraestrutura</h4>
+            <div class="meta">mar/2014 — mar/2016</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Atendimento de chamados (Zendesk). Administração Windows Server e AD.</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="job" data-tags="newspace tecnico micros impressoras">
+            <h4>Grupo New Space — Técnico em Informática</h4>
+            <div class="meta">out/2011 — mai/2013</div>
+            <details>
+              <summary>Detalhes</summary>
+              <ul>
+                <li>Checklist de servidores, suporte ao usuário, instalação de SOs e configuração de pacotes Office.</li>
+              </ul>
+            </details>
+          </article>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const root = document.body;
+
+      // Theme toggle
+      const themeBtn = document.getElementById('themeBtn');
+      function toggleTheme(){
+        const theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        if(themeBtn) themeBtn.setAttribute('aria-pressed', theme === 'dark' ? 'false' : 'true');
+      }
+      if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+      // Copy email
+      const copyBtn = document.getElementById('copyBtn');
+      const email = document.getElementById('emailLink')?.getAttribute('href')?.replace('mailto:', '') || 'rafa.lander@hotmail.com';
+      if(copyBtn){
+        copyBtn.addEventListener('click', async ()=>{
+          try{
+            await navigator.clipboard.writeText(email);
+            const prev = copyBtn.innerText;
+            copyBtn.innerText = '✔ Copiado';
+            setTimeout(()=> copyBtn.innerText = prev, 1400);
+          }catch(e){ alert('Não foi possível copiar. Use ctrl+c para copiar manualmente.'); }
+        });
+      }
+
+      // Print / Save
+      const printBtn = document.getElementById('printBtn');
+      if(printBtn) printBtn.addEventListener('click', ()=>{ window.print(); });
+
+      // Simple filter
+      const searchBtn = document.getElementById('searchBtn');
+      const qInput = document.getElementById('q');
+      function filterJobs(){
+        const q = qInput?.value.trim().toLowerCase();
+        const jobs = document.querySelectorAll('#timeline .job');
+        if(!q){ jobs.forEach(j=>j.style.display='block'); return }
+        jobs.forEach(job => {
+          const tags = (job.getAttribute('data-tags') || '').toLowerCase();
+          const text = (job.innerText || '').toLowerCase();
+          const match = tags.includes(q) || text.includes(q);
+          job.style.display = match ? 'block' : 'none';
+        });
+      }
+      if(searchBtn) searchBtn.addEventListener('click', filterJobs);
+      if(qInput) qInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') filterJobs(); });
+
+      // Age & birth date calculation — fix for undefined variable
+      const nascimento = new Date(1993, 4, 6); // mês 4 = maio
+      const hoje = new Date();
+      let idade = hoje.getFullYear() - nascimento.getFullYear();
+      if (hoje.getMonth() < nascimento.getMonth() || (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())) {
+        idade--;
+      }
+      const divBorn = document.querySelector('.born');
+      const divIdade = document.querySelector('.age');
+      if(divIdade) divIdade.innerHTML = `<strong>Idade:</strong> ${idade} anos`;
+      if(divBorn) divBorn.innerHTML = `<strong>Nasc.:</strong> ${nascimento.toLocaleDateString('pt-BR')}`;
+
+      // Accessibility: expand details on click of job header (native <details> used)
+      document.querySelectorAll('#timeline .job').forEach(job=>{ /* no-op: keep native behaviour */ });
+      
+      // Calcular tempo total de experiência a partir das datas das experiências
+      const experiencias = [
+        { inicio: '2025-06', fim: null },
+        { inicio: '2022-07', fim: '2025-06' },
+        { inicio: '2019-09', fim: '2022-03' },
+        { inicio: '2018-11', fim: '2019-08' },
+        { inicio: '2016-10', fim: '2017-10' },
+        { inicio: '2014-03', fim: '2016-03' },
+        { inicio: '2011-10', fim: '2013-05' }
+      ];
+
+      let totalMeses = 0;
+      experiencias.forEach(exp => {
+        const inicio = new Date(exp.inicio + '-01');
+        const fim = exp.fim ? new Date(exp.fim + '-01') : hoje;
+        let meses = (fim.getFullYear() - inicio.getFullYear()) * 12 + (fim.getMonth() - inicio.getMonth());
+        if (meses < 0) meses = 0;
+        totalMeses += meses;
+      });
+
+      const anos = Math.floor(totalMeses / 12);
+      const meses = totalMeses % 12;
+      const tempoTexto = meses > 0 ? `${anos} anos e ${meses} meses` : `${anos} anos`;
+
+      document.getElementById('experienceSummary').textContent = `Profissional com ${tempoTexto} de experiência em TI - suporte, infraestrutura e desenvolvimento`;
+    });
+  </script>
+</body>
+</html>
