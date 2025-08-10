@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Rafael Lander Santos — Currículo Interativo</title>
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="dark">
   <div class="container">
@@ -73,7 +73,7 @@
       </section>
       
       <section style="margin-top:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center"><h3>Experiência Profissional</h3><small style="color:var(--muted)">Clique em um item para expandir</small></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>Experiência Profissional</h3><small class="print-hide" style="color:var(--muted)">Clique em um item para expandir</small></div>
 
         <div class="timeline" id="timeline">
 
@@ -192,8 +192,17 @@
 
       // Print / Save
       const printBtn = document.getElementById('printBtn');
-      if(printBtn) printBtn.addEventListener('click', ()=>{ window.print(); });
-
+      if(printBtn) printBtn.addEventListener('click', ()=>{
+        // Expande todos os <details> antes de imprimir e volta ao estado original depois
+        const details = Array.from(document.querySelectorAll('details'));
+        const wasOpen = details.map(d => d.open);
+        details.forEach(d => d.open = true);
+        window.print();
+        // Após um pequeno delay, restaura o estado original
+        setTimeout(() => {
+          details.forEach((d, i) => d.open = wasOpen[i]);
+        }, 1000);
+      });
       // Simple filter
       const searchBtn = document.getElementById('searchBtn');
       const qInput = document.getElementById('q');
@@ -255,3 +264,4 @@
   </script>
 </body>
 </html>
+
