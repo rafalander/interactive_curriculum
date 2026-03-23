@@ -14,36 +14,51 @@
       const copyBtn = document.getElementById('copyBtn');
       const email = document.getElementById('emailLink')?.getAttribute('href')?.replace('mailto:', '') || 'rafa.lander@hotmail.com';
       if(copyBtn){
+        const copyLabel = copyBtn.querySelector('[data-copy-label]');
         copyBtn.addEventListener('click', async ()=>{
           try{
             await navigator.clipboard.writeText(email);
-            const prev = copyBtn.innerText;
-            copyBtn.innerText = '✔ Copiado';
-            setTimeout(()=> copyBtn.innerText = prev, 1400);
+            if(copyLabel){
+              const prev = copyLabel.textContent;
+              copyLabel.textContent = 'Copiado';
+              setTimeout(()=> { copyLabel.textContent = prev; }, 1400);
+            }
           }catch(e){ alert('Não foi possível copiar. Use ctrl+c para copiar manualmente.'); }
         });
       }
 
-      // Print / Save
-      const printBtn = document.getElementById('printBtn');
-      if(printBtn) printBtn.addEventListener('click', ()=>{
-        // Expande todos os <details> antes de imprimir e volta ao estado original depois
-        const details = Array.from(document.querySelectorAll('details'));
-        const wasOpen = details.map(d => d.open);
-        details.forEach(d => d.open = true);
-        window.print();
-        // Após um pequeno delay, restaura o estado original
-        setTimeout(() => {
-          details.forEach((d, i) => d.open = wasOpen[i]);
-        }, 1000);
-      });
-      // Simple filter
       const searchBtn = document.getElementById('searchBtn');
       const qInput = document.getElementById('q');
+
+      // Print / Save — Chrome: backdrop-filter + grid podem deixar <main> em branco no PDF; CSS em style.css (.print-fix)
+      let printDetailsSnapshot = [];
+      const printBtn = document.getElementById('printBtn');
+      if(printBtn) printBtn.addEventListener('click', ()=>{
+        if(qInput) qInput.value = '';
+        document.querySelectorAll('#timeline .job').forEach((j) => { j.style.display = ''; });
+        const details = Array.from(document.querySelectorAll('details'));
+        printDetailsSnapshot = details.map(d => d.open);
+        details.forEach((d) => { d.open = true; });
+        document.documentElement.classList.add('print-prep');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.print();
+          });
+        });
+      });
+      window.addEventListener('afterprint', () => {
+        document.documentElement.classList.remove('print-prep');
+        const details = Array.from(document.querySelectorAll('details'));
+        details.forEach((d, i) => {
+          if(printDetailsSnapshot[i] !== undefined) d.open = printDetailsSnapshot[i];
+        });
+      });
+
+      // Simple filter
       function filterJobs(){
         const q = qInput?.value.trim().toLowerCase();
         const jobs = document.querySelectorAll('#timeline .job');
-        if(!q){ jobs.forEach(j=>j.style.display='block'); return }
+        if(!q){ jobs.forEach(j=>{ j.style.display = ''; }); return }
         jobs.forEach(job => {
           const tags = (job.getAttribute('data-tags') || '').toLowerCase();
           const text = (job.innerText || '').toLowerCase();
@@ -93,5 +108,8 @@
       const meses = totalMeses % 12;
       const tempoTexto = meses > 0 ? `${anos} anos e ${meses} meses` : `${anos} anos`;
 
-      document.getElementById('experienceSummary').textContent = `Profissional com ${tempoTexto} de experiência em TI - suporte, infraestrutura e desenvolvimento`;
+      const experienceSummaryEl = document.getElementById('experienceSummary');
+      if(experienceSummaryEl){
+        experienceSummaryEl.textContent = `Profissional com ${tempoTexto} de experiência em TI - suporte, infraestrutura e desenvolvimento`;
+      }
     });
